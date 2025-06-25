@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 import { useAuth } from '../hooks/useAuth';
 
-interface AddFriendPopupProps {
-    emails: string[];
-    onClose: () => void;
-}
-
-const AddFriendPopup: React.FC<AddFriendPopupProps> = ({ emails, onClose }) => {
+const AddFriendPopup = ({ emails, onClose }) => {
     const { userdetails } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
@@ -16,7 +11,7 @@ const AddFriendPopup: React.FC<AddFriendPopupProps> = ({ emails, onClose }) => {
         email.toLowerCase().includes(searchTerm.toLowerCase()) && email !== userdetails?.user?.email
     );
 
-    const handleAddFriend = async (email: string) => {
+    const handleAddFriend = async (email) => {
         if (!userdetails) return;
         
         setLoading(true);

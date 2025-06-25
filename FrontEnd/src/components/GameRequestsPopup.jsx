@@ -3,16 +3,12 @@ import { Button } from './Button';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
-interface GameRequestsPopupProps {
-    onClose: () => void;
-}
-
-const GameRequestsPopup: React.FC<GameRequestsPopupProps> = ({ onClose }) => {
+const GameRequestsPopup = ({ onClose }) => {
     const { userdetails, checkAuth } = useAuth();
     const navigate = useNavigate();
     const gameRequests = userdetails?.user?.game_requests || [];
 
-    const handleGameRequest = async (from: string, gameId: string, action: 'accept' | 'reject') => {
+    const handleGameRequest = async (from, gameId, action) => {
         if (!userdetails?.user?.email) return;
 
         try {
@@ -73,7 +69,7 @@ const GameRequestsPopup: React.FC<GameRequestsPopupProps> = ({ onClose }) => {
                     
                     <div className="max-h-64 overflow-y-auto space-y-3">
                         {gameRequests.length > 0 ? (
-                            gameRequests.map((request: { from: string, gameId: string }, index: number) => (
+                            gameRequests.map((request, index) => (
                                 <div key={index} className="p-4 bg-slate-700/50 rounded-lg border border-slate-600/50">
                                     <div className="flex items-center justify-between mb-3">
                                         <div className="flex items-center space-x-3">

@@ -1,12 +1,3 @@
-interface ButtonProps {
-    onClick: () => void;
-    children: React.ReactNode;
-    variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'outline';
-    size?: 'sm' | 'md' | 'lg';
-    disabled?: boolean;
-    className?: string;
-}
-
 export const Button = ({ 
     onClick, 
     children, 
@@ -14,7 +5,7 @@ export const Button = ({
     size = 'md', 
     disabled = false,
     className = ''
-}: ButtonProps) => {
+}) => {
     const baseClasses = "font-semibold rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg";
     
     const variants = {
