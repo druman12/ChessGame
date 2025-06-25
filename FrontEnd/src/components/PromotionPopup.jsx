@@ -1,11 +1,6 @@
 import React from 'react';
 
-interface PromotionPopupProps {
-    onSelect: (piece: 'q' | 'r' | 'b' | 'n') => void;
-    onClose: () => void;
-}
-
-const PromotionPopup: React.FC<PromotionPopupProps> = ({ onSelect, onClose }) => {
+const PromotionPopup = ({ onSelect, onClose }) => {
     const pieces = [
         { type: 'q', name: 'Queen', icon: '♕' },
         { type: 'r', name: 'Rook', icon: '♖' },
@@ -26,7 +21,7 @@ const PromotionPopup: React.FC<PromotionPopupProps> = ({ onSelect, onClose }) =>
                         {pieces.map((piece) => (
                             <button
                                 key={piece.type}
-                                onClick={() => onSelect(piece.type as 'q' | 'r' | 'b' | 'n')}
+                                onClick={() => onSelect(piece.type)}
                                 className="bg-slate-700 hover:bg-slate-600 border border-slate-600 rounded-lg p-4 transition-all duration-200 hover:scale-105 active:scale-95"
                             >
                                 <div className="text-4xl mb-2">{piece.icon}</div>

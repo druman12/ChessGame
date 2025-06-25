@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "../components/Button"
 import { ChessBoard } from "../components/ChessBoard"
 import { useSocket } from "../hooks/useSocket"
-import { Chess, Square } from "chess.js";
+import { Chess } from "chess.js";
 import { GameOverPopup } from "../components/GameOverPopup";
 import { useAuth } from "../hooks/useAuth";
 import GameRequestsPopup from "../components/GameRequestsPopup";
@@ -19,16 +19,16 @@ export const Game = () => {
     const [chess, setChess] = useState(new Chess());
     const [board, setBoard] = useState(chess.board());
     const [started, setStarted] = useState(false);
-    const [playerColor, setPlayerColor] = useState<"white" | "black" | null>(null);
+    const [playerColor, setPlayerColor] = useState(null);
     const [isYourTurn, setIsYourTurn] = useState(false);
-    const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
-    const [timeLeft, setTimeLeft] = useState<number>(60);
-    const [gameOver, setGameOver] = useState<{ winner: string; msg: string } | null>(null);
+    const [selectedSquare, setSelectedSquare] = useState(null);
+    const [timeLeft, setTimeLeft] = useState(60);
+    const [gameOver, setGameOver] = useState(null);
     const [showFriendsList, setShowFriendsList] = useState(true);
     const { userdetails } = useAuth();
-    const [gameId, setGameId] = useState<string | null>(null);
+    const [gameId, setGameId] = useState(null);
     const [showGameRequests, setShowGameRequests] = useState(false);
-    const [socket, setSocket] = useState<WebSocket | null>(null);
+    const [socket, setSocket] = useState(null);
     const [isWaiting, setIsWaiting] = useState(() => {
         return localStorage.getItem('isWaiting') === 'true';
     });
@@ -89,7 +89,7 @@ export const Game = () => {
         };
     }, [started]);
 
-    const handleSquareClick = (square: Square | null) => {
+    const handleSquareClick = (square) => {
         if (square === null) {
             setSelectedSquare(null);
         } else if (selectedSquare === square) {
@@ -99,7 +99,7 @@ export const Game = () => {
         }
     };
 
-    const handleFriendGameRequest = async (friendEmail: string) => {
+    const handleFriendGameRequest = async (friendEmail) => {
         try {
             const response = await fetch('http://localhost:3000/game/sendgamerequest', {
                 method: 'POST',
@@ -135,7 +135,7 @@ export const Game = () => {
     };
 
     useEffect(() => {
-        let timer: ReturnType<typeof setTimeout>;
+        let timer;
         if (isYourTurn && started && !gameOver) {
             setTimeLeft(60);
             timer = setInterval(() => {
@@ -161,7 +161,7 @@ export const Game = () => {
     useEffect(() => {
         if (!socket) return;
 
-        const handleMessage = (event: MessageEvent) => {
+        const handleMessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === SEND_GAME_REQUEST) {
                 const accept = window.confirm(`${data.payload.from} wants to play with you. Accept?`);
@@ -321,7 +321,7 @@ export const Game = () => {
                                     
                                     <div className="space-y-2 max-h-64 overflow-y-auto">
                                         {userdetails?.user?.friend_list?.length > 0 ? (
-                                            userdetails.user.friend_list.map((friend: string, index: number) => (
+                                            userdetails.user.friend_list.map((friend, index) => (
                                                 <div key={index} className="flex items-center justify-between bg-slate-700/50 rounded-lg p-3 border border-slate-600/50">
                                                     <div className="flex items-center space-x-3">
                                                         <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">

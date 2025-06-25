@@ -1,15 +1,10 @@
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
-// interface User {
-//     email: string;
-//     name: string;
-// }
-
 export const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
-    const [userdetails, setUserdetails] = useState<any>(null);
+    const [userdetails, setUserdetails] = useState(null);
 
     useEffect(() => {
         checkAuth();
@@ -38,7 +33,7 @@ export const useAuth = () => {
         }
     };
 
-    const handleGoogleLogin = async (credential: string) => {
+    const handleGoogleLogin = async (credential) => {
         try {
             const decoded = jwtDecode(credential);
             const response = await fetch('http://localhost:3000/api/auth/google', {
@@ -48,16 +43,16 @@ export const useAuth = () => {
                 },
                 credentials: 'include',
                 body: JSON.stringify({
-                    email: (decoded as any).email,
-                    name: (decoded as any).name
+                    email: decoded.email,
+                    name: decoded.name
                 })
             });
 
             if (response.ok) {
                 setIsAuthenticated(true);
                 setUserdetails({
-                    email: (decoded as any).email,
-                    name: (decoded as any).name
+                    email: decoded.email,
+                    name: decoded.name
                 });
                 checkAuth();
             }

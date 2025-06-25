@@ -2,20 +2,16 @@ import React, { useState } from 'react';
 import { Button } from './Button';
 import { useAuth } from '../hooks/useAuth';
 
-interface FriendRequestsPopupProps {
-    onClose: () => void;
-}
-
-const FriendRequestsPopup: React.FC<FriendRequestsPopupProps> = ({ onClose }) => {
+const FriendRequestsPopup = ({ onClose }) => {
     const { userdetails, checkAuth } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
-    const [loading, setLoading] = useState<string | null>(null);
+    const [loading, setLoading] = useState(null);
 
-    const filteredRequests = userdetails?.user?.friend_requests.filter((email: string) => 
+    const filteredRequests = userdetails?.user?.friend_requests.filter((email) => 
         email.toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
 
-    const handleFriendRequest = async (email: string, action: 'accept' | 'reject') => {
+    const handleFriendRequest = async (email, action) => {
         if (!userdetails?.user?.email) return;
 
         setLoading(`${email}-${action}`);
@@ -74,7 +70,7 @@ const FriendRequestsPopup: React.FC<FriendRequestsPopupProps> = ({ onClose }) =>
                     
                     <div className="max-h-64 overflow-y-auto space-y-3">
                         {filteredRequests.length > 0 ? (
-                            filteredRequests.map((email: string, index: number) => (
+                            filteredRequests.map((email, index) => (
                                 <div key={index} className="p-4 bg-slate-700/50 rounded-lg border border-slate-600/50">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center space-x-3">

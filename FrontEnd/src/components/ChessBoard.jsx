@@ -1,31 +1,17 @@
-import { Color, PieceSymbol, Square } from "chess.js";
 import { useState, useEffect, useCallback } from "react";
 import { MOVE } from "../screens/Game";
 import PromotionPopup from "./PromotionPopup";
 
-export const ChessBoard = ({ chess, board, socket, setBoard, playerColor, selectedSquare, setSelectedSquare, isYourTurn }: {
-    chess: any;
-    setBoard: any;
-    board: ({
-        square: Square;
-        type: PieceSymbol;
-        color: Color;
-    } | null)[][];
-    socket: WebSocket;
-    playerColor: "white" | "black" | null;
-    selectedSquare: Square | null;
-    setSelectedSquare: (square: Square | null) => void;
-    isYourTurn: boolean;
-}) => {
-    const [from, setFrom] = useState<Square | null>(null);
-    const [promotionMove, setPromotionMove] = useState<{ from: Square, to: Square } | null>(null);
-    const [possibleMoves, setPossibleMoves] = useState<Square[]>([]);
+export const ChessBoard = ({ chess, board, socket, setBoard, playerColor, selectedSquare, setSelectedSquare, isYourTurn }) => {
+    const [from, setFrom] = useState(null);
+    const [promotionMove, setPromotionMove] = useState(null);
+    const [possibleMoves, setPossibleMoves] = useState([]);
     
     const reversedBoard = playerColor === "black" ? [...board].reverse().map(row => [...row].reverse()) : board;
 
     useEffect(() => {
-        const handleOutsideClick = (e: MouseEvent) => {
-            if (!(e.target as HTMLElement).closest('.chess-board')) {
+        const handleOutsideClick = (e) => {
+            if (!e.target.closest('.chess-board')) {
                 setSelectedSquare(null);
                 setFrom(null);
                 setPossibleMoves([]);
@@ -40,13 +26,13 @@ export const ChessBoard = ({ chess, board, socket, setBoard, playerColor, select
     useEffect(() => {
         if (from && isYourTurn) {
             const moves = chess.moves({ square: from, verbose: true });
-            setPossibleMoves(moves.map((move: any) => move.to));
+            setPossibleMoves(moves.map((move) => move.to));
         } else {
             setPossibleMoves([]);
         }
     }, [from, chess, isYourTurn]);
 
-    const handleSquareClick = useCallback((squareRepresentation: Square) => {
+    const handleSquareClick = useCallback((squareRepresentation) => {
         if (!isYourTurn) return;
 
         setSelectedSquare(squareRepresentation);
@@ -105,7 +91,7 @@ export const ChessBoard = ({ chess, board, socket, setBoard, playerColor, select
         }
     }, [from, isYourTurn, chess, socket, setBoard, setSelectedSquare, playerColor]);
 
-    const handlePromotion = useCallback((promotionPiece: 'q' | 'r' | 'b' | 'n') => {
+    const handlePromotion = useCallback((promotionPiece) => {
         if (promotionMove) {
             const move = { ...promotionMove, promotion: promotionPiece };
             const chessMove = chess.move(move);
@@ -132,7 +118,7 @@ export const ChessBoard = ({ chess, board, socket, setBoard, playerColor, select
         setPossibleMoves([]);
     }, [setSelectedSquare]);
 
-    const getSquareClasses = (i: number, j: number, squareRepresentation: Square) => {
+    const getSquareClasses = (i, j, squareRepresentation) => {
         const isLight = (i + j) % 2 === 0;
         const isSelected = selectedSquare === squareRepresentation;
         const isFrom = from === squareRepresentation;
@@ -184,7 +170,7 @@ export const ChessBoard = ({ chess, board, socket, setBoard, playerColor, select
                             {row.map((square, j) => {
                                 const file = playerColor === "black" ? 7 - j : j;
                                 const rank = playerColor === "black" ? i : 7 - i;
-                                const squareRepresentation = String.fromCharCode(97 + file) + (rank + 1) as Square;
+                                const squareRepresentation = String.fromCharCode(97 + file) + (rank + 1);
                                 const isPossibleMove = possibleMoves.includes(squareRepresentation);
 
                                 return (
