@@ -7,6 +7,7 @@ import { Chess } from "chess.js";
 import { GameOverPopup } from "../components/GameOverPopup";
 import { useAuth } from "../hooks/useAuth";
 import GameRequestsPopup from "../components/GameRequestsPopup";
+import base_url from '../URL.jsx';
 
 export const INIT_GAME = "init_game";
 export const MOVE = "move";
@@ -101,7 +102,7 @@ export const Game = () => {
 
     const handleFriendGameRequest = async (friendEmail) => {
         try {
-            const response = await fetch('http://localhost:3000/game/sendgamerequest', {
+            const response = await fetch(`${base_url}/game/sendgamerequest`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

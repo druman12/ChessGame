@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import base_url from '../URL.jsx';
 
 export const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -12,7 +13,7 @@ export const useAuth = () => {
 
     const checkAuth = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/auth/check', {
+            const response = await fetch(`${base_url}/api/auth/check`, {
                 credentials: 'include'
             });
             
@@ -36,7 +37,7 @@ export const useAuth = () => {
     const handleGoogleLogin = async (credential) => {
         try {
             const decoded = jwtDecode(credential);
-            const response = await fetch('http://localhost:3000/api/auth/google', {
+            const response = await fetch(`${base_url}/api/auth/google`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

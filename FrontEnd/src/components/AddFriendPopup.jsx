@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from './Button';
 import { useAuth } from '../hooks/useAuth';
+import base_url from '../URL.jsx';
 
 const AddFriendPopup = ({ emails, onClose }) => {
     const { userdetails } = useAuth();
@@ -21,7 +22,7 @@ const AddFriendPopup = ({ emails, onClose }) => {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/game/sendfriendrequest', {
+            const response = await fetch(`${base_url}/game/sendfriendrequest`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

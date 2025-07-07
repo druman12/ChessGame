@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from './Button';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import base_url from '../URL.jsx';
 
 const GameRequestsPopup = ({ onClose }) => {
     const { userdetails, checkAuth } = useAuth();
@@ -12,7 +13,7 @@ const GameRequestsPopup = ({ onClose }) => {
         if (!userdetails?.user?.email) return;
 
         try {
-            const response = await fetch('http://localhost:3000/game/handlegamerequest', {
+            const response = await fetch(`${base_url}/game/handlegamerequest`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
